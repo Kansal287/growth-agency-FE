@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+.dark {
+  --background: #06090e;
+  --foreground: #f8fafc;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-padding-top: 4.5rem; /* Prevent fixed header from overlapping sections */
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Custom Scrollbar Utilities */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mesh Backdrop effects - applied natively to background to prevent Z-index overlay bugs */
+.mesh-bg {
+  background-color: var(--background);
+  background-image: radial-gradient(circle at 80% 20%, rgba(219, 39, 119, 0.04), transparent 40%),
+                    radial-gradient(circle at 10% 70%, rgba(99, 102, 241, 0.05), transparent 45%);
+  transition: background-color 0.2s ease;
+}
+
+.dark .mesh-bg {
+  background-image: radial-gradient(circle at 80% 20%, rgba(219, 39, 119, 0.09), transparent 40%),
+                    radial-gradient(circle at 10% 70%, rgba(99, 102, 241, 0.09), transparent 45%);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
