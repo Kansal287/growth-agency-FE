@@ -38,9 +38,26 @@ export function useResources<TForm, TTable = any>(
         setTableData(result);
         setTotalItems(result.length);
       } else if (result && typeof result === "object") {
-        const list = result.data || result.records || result.items || [];
+        let list = result.data || result.records || result.items || result;
+        let total = result.total ?? result.totalItems ?? 0;
+
+        if (list && typeof list === "object" && !Array.isArray(list)) {
+          const keys = Object.keys(list);
+          const arrayKey = keys.find(key => key.toLowerCase() === modelName.toLowerCase() && Array.isArray((list as any)[key]))
+            || keys.find(key => Array.isArray((list as any)[key]));
+
+          if (arrayKey) {
+            total = (list as any).total ?? (list as any).totalItems ?? total ?? (list as any)[arrayKey].length;
+            list = (list as any)[arrayKey];
+          } else {
+            list = [];
+          }
+        } else if (Array.isArray(list)) {
+          total = total || list.length;
+        }
+
         setTableData(Array.isArray(list) ? list : []);
-        setTotalItems(result.total || result.totalItems || list.length || 0);
+        setTotalItems(total);
       } else {
         setTableData([]);
         setTotalItems(0);
