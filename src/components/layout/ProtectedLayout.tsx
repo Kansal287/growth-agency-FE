@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
-import { getAdminToken, getClientToken } from '@/lib/helpers';
+import { getAdminToken } from '@/lib/helpers';
 import { adminMenuItems, clientMenuItems } from '@/lib/menuConfig';
+import apiClient from '@/lib/api-client';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -19,23 +20,35 @@ export default function ProtectedLayout({ children, type }: ProtectedLayoutProps
   const [checking, setChecking] = useState(true);
 
   const menuItems = type === 'admin' ? adminMenuItems : clientMenuItems;
-  const loginPath = type === 'admin' ? '/admin' : '/client';
 
   useEffect(() => {
-    // Check token presence
-    const token = type === 'admin' ? getAdminToken() : getClientToken();
-    
-    // Redirect if accessing a dashboard route unauthenticated
-    if (!token && pathname !== loginPath) {
-      setChecking(false);
-      // router.replace(loginPath);
+    if (type === 'admin') {
+      const token = getAdminToken();
+      if (!token && pathname !== '/admin') {
+        router.replace('/admin');
+      } else {
+        setChecking(false);
+      }
     } else {
-      setChecking(false);
+      // Client session verification via cookie
+      const checkSession = async () => {
+        try {
+          const response = await apiClient.get("/auth/me");
+          if (response.status === 200 && response.data && response.data.success) {
+            setChecking(false);
+          } else {
+            router.replace('/login');
+          }
+        } catch (err) {
+          router.replace('/login');
+        }
+      };
+      checkSession();
     }
-  }, [router, pathname, loginPath, type]);
+  }, [router, pathname, type]);
 
-  // Render the login pages directly without the dashboard sidebar and header shell
-  if (pathname === loginPath) {
+  // Render the admin login page directly without the dashboard sidebar and header shell
+  if (type === 'admin' && pathname === '/admin') {
     return <>{children}</>;
   }
 

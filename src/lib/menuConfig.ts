@@ -5,8 +5,8 @@ import {
   MessageSquare,
   CreditCard,
   ListTodo,
-  UserCheck
-} from 'lucide-react';
+  UserCheck,
+} from "lucide-react";
 
 export interface SubTab {
   name: string;
@@ -26,18 +26,30 @@ export interface MenuItem {
 
 export const clientMenuItems: MenuItem[] = [
   {
-    name: 'Dashboard',
+    name: "Dashboard",
     icon: LayoutDashboard,
-    link: '/client/dashboard',
+    link: "/client/dashboard",
     alwaysVisible: true,
   },
 ];
 
 export const adminMenuItems: MenuItem[] = [
   {
-    name: 'Admin Dashboard',
+    name: "Dashboard",
     icon: LayoutDashboard,
-    link: '/admin/dashboard',
+    link: "/admin/dashboard",
+    alwaysVisible: true,
+  },
+  {
+    name: "Inquiries",
+    icon: MessageSquare,
+    link: "/admin/inquiries",
+    alwaysVisible: true,
+  },
+  {
+    name: "Users",
+    icon: Users,
+    link: "/admin/users",
     alwaysVisible: true,
   },
 ];

@@ -23,10 +23,15 @@ export default function Sidebar({ isOpen, onClose, menuItems, type }: SidebarPro
   const [role, setRole] = useState('');
 
   useEffect(() => {
-    const userInfo = getSessionUserInfo(type);
-    if (userInfo) {
-      setPermissions(userInfo.permissions || []);
-      setRole(userInfo.role);
+    if (type === 'admin') {
+      const userInfo = getSessionUserInfo('admin');
+      if (userInfo) {
+        setPermissions(userInfo.permissions || []);
+        setRole(userInfo.role);
+      }
+    } else {
+      setPermissions(['all']);
+      setRole('client');
     }
   }, [type]);
 

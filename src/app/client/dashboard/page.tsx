@@ -1,11 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getSessionUserInfo } from '@/lib/helpers';
 import apiClient from '@/lib/api-client';
 import { CheckCircle2, Clock, Check } from 'lucide-react';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function ClientDashboard() {
   const [userInfo, setUserInfo] = useState<any>(null);
@@ -14,8 +11,10 @@ export default function ClientDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      const info = getSessionUserInfo('client');
-      setUserInfo(info);
+      const response = await apiClient.get("/auth/me");
+      if (response.status === 200 && response.data && response.data.success) {
+        setUserInfo(response.data.data);
+      }
 
       const tasksRes: any = await apiClient.get('/tasks');
       setTasks(tasksRes.tasks || []);
@@ -44,7 +43,6 @@ export default function ClientDashboard() {
 
   return (
     <div className="space-y-6">
-      <ToastContainer theme="colored" />
 
       {/* Header Panel */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -68,7 +66,7 @@ export default function ClientDashboard() {
               <div>
                 <p className="text-[10px] text-slate-400 uppercase font-semibold">Active Plan</p>
                 <p className="text-sm font-bold text-pink-600 dark:text-pink-400">
-                  {userInfo?.planTier === 'growth_starter' ? 'Starter Plan (₹1,999/mo)' : userInfo?.planTier === 'business_pro' ? 'Business Pro Plan (₹3,999/mo)' : 'Growth Plan (₹5,999/mo)'}
+                  {userInfo?.subscription?.planName || 'Active Workspace'}
                 </p>
               </div>
               <div>

@@ -2,34 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { setClientToken, setAdminToken } from '@/lib/helpers';
+import { setAdminToken } from '@/lib/helpers';
 import apiClient from '@/lib/api-client';
 import { Users, CreditCard, Clock, MessageSquare, Shield } from 'lucide-react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 export default function AdminDashboard() {
   const router = useRouter();
 
-  const [tasks, setTasks] = useState<any[]>([]);
-  const [tickets, setTickets] = useState<any[]>([]);
-  const [customers, setCustomers] = useState<any[]>([]);
+  const [dashData, setDashData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchAdminData = async () => {
     try {
-      const tasksRes: any = await apiClient.get('/tasks');
-      setTasks(tasksRes.tasks || []);
-
-      const ticketsRes: any = await apiClient.get('/tickets');
-      setTickets(ticketsRes.tickets || []);
-
-      // Pull customer registry from mock storage
-      const rawDb = sessionStorage.getItem('growth_agency_db');
-      if (rawDb) {
-        const parsed = JSON.parse(rawDb);
-        setCustomers(parsed.users || []);
-      }
+      // const tasksRes: any = await apiClient.get('/tasks');
+      setDashData([]);
     } catch (err) {
       console.error('Error fetching admin details:', err);
     } finally {
@@ -41,39 +28,6 @@ export default function AdminDashboard() {
     fetchAdminData();
   }, []);
 
-  // Helper token generator to switch roles in the browser
-  const generateMockJWTForRole = (role: 'client' | 'admin', username: string, planTier = 'business_pro') => {
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    const payload = btoa(JSON.stringify({
-      userId: username,
-      username,
-      name: username === 'client' ? 'Giva Jewellers' : 'Operator Staff',
-      role,
-      permissions: ['all'],
-      planTier,
-      exp: Math.floor(Date.now() / 1000) + 86400
-    }));
-    return `${header}.${payload}.signature`;
-  };
-
-  const handleDevRoleSwitch = (role: 'client' | 'admin') => {
-    if (role === 'client') {
-      const token = generateMockJWTForRole('client', 'client');
-      setClientToken(token);
-      toast.success('Authenticated as CLIENT. Redirecting to portal...');
-      setTimeout(() => {
-        router.push('/client/dashboard');
-      }, 1000);
-    } else {
-      const token = generateMockJWTForRole('admin', 'admin');
-      setAdminToken(token);
-      toast.success('Authenticated as ADMIN. Reloading workspace...');
-      setTimeout(() => {
-        fetchAdminData();
-      }, 1000);
-    }
-  };
-
   if (loading) {
     return (
       <div className="py-20 text-center text-sm text-slate-500">
@@ -83,13 +37,12 @@ export default function AdminDashboard() {
     );
   }
 
-  const clientsCount = customers.filter(c => c.role === 'client').length;
-  const reviewTasksCount = tasks.filter(t => t.status === 'review').length;
-  const openTicketsCount = tickets.filter(t => t.status === 'Open').length;
+  const clientsCount = "2";
+  const reviewTasksCount = "0";
+  const openTicketsCount = "0";
 
   return (
     <div className="space-y-6">
-      <ToastContainer theme="colored" />
 
       {/* Header Panel */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { Menu, Bell, LogOut, User, ChevronDown, Sun, Moon, Sparkles } from 'lucide-react';
-import { getSessionUserInfo, clearAdminToken, clearClientToken } from '@/lib/helpers';
+import { getSessionUserInfo, clearAdminToken } from '@/lib/helpers';
+import apiClient from '@/lib/api-client';
 
 interface NavbarProps {
   type: 'admin' | 'client';
@@ -23,13 +24,34 @@ export default function Navbar({ type, onToggleSidebar }: NavbarProps) {
 
   useEffect(() => {
     setMounted(true);
-    const userInfo = getSessionUserInfo(type);
-    if (userInfo) {
-      setName(userInfo.name);
-      setRoleText(userInfo.role === 'admin' ? 'Operator Admin' : `Client: ${userInfo.planTier?.toUpperCase().replace('_', ' ') || 'Pro'}`);
+    if (type === 'admin') {
+      // const userInfo = getSessionUserInfo('admin');
+      // if (userInfo) {
+      //   setName(userInfo.name);
+      //   setRoleText('Operator Admin');
+      // } else {
+      //   setName('Agency Operator');
+      //   setRoleText('Staff');
+      // }
     } else {
-      setName(type === 'admin' ? 'Agency Operator' : 'Business Client');
-      setRoleText(type === 'admin' ? 'Staff' : 'Pro Plan');
+      // client dashboard user profile check
+      const fetchClientProfile = async () => {
+        try {
+          const response = await apiClient.get("/auth/me");
+          if (response.status === 200 && response.data && response.data.success) {
+            const user = response.data.data;
+            setName(user.name);
+            setRoleText(user.subscription ? `Client: ${user.subscription.planName || 'Active Subscriber'}` : 'Guest User');
+          } else {
+            setName('Business Client');
+            setRoleText('Pro Plan');
+          }
+        } catch (err) {
+          setName('Business Client');
+          setRoleText('Pro Plan');
+        }
+      };
+      fetchClientProfile();
     }
   }, [type]);
 
@@ -43,13 +65,17 @@ export default function Navbar({ type, onToggleSidebar }: NavbarProps) {
     return () => document.removeEventListener('mousedown', handleOutside);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (type === 'admin') {
       clearAdminToken();
       router.push('/admin');
     } else {
-      clearClientToken();
-      router.push('/client');
+      try {
+        await apiClient.post("/auth/logout");
+      } catch (err) {
+        console.error("Logout error:", err);
+      }
+      router.push('/login');
     }
   };
 
@@ -78,7 +104,7 @@ export default function Navbar({ type, onToggleSidebar }: NavbarProps) {
           <Sparkles size={14} className="text-white animate-pulse" />
         </div>
         <span className="font-semibold text-slate-900 dark:text-white text-[15px] tracking-tight hidden sm:block">
-          Growth<span className="text-pink-600 dark:text-pink-400">Immortals</span>
+          Growth<span className="text-pink-600 dark:text-pink-400">Hub</span>
         </span>
       </div>
 
