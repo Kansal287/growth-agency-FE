@@ -73,6 +73,7 @@ interface User {
   email: string;
   name: string;
   avatar?: string;
+  phone?: string;
   isActive: boolean;
   role: 'admin' | 'client' | 'public';
   createdAt: string;
@@ -488,6 +489,8 @@ export default function UsersAdminPage() {
                 
                 <button
                   onClick={closeDetailsModal}
+                  aria-label="Close"
+                  title="Close"
                   className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-800"
                 >
                   <X size={16} />
