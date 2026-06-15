@@ -118,6 +118,7 @@ function ReusableTable<T>({
                 <th className="w-12 px-4 py-3.5 text-center">
                   <input
                     type="checkbox"
+                    aria-label="Select all rows"
                     checked={isAllSelected}
                     onChange={(e) => handleSelectAll(e.target.checked)}
                     className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-pink-600 focus:ring-pink-500 cursor-pointer"
@@ -194,6 +195,7 @@ function ReusableTable<T>({
                       <td className="px-4 py-3.5 text-center">
                         <input
                           type="checkbox"
+                          aria-label={`Select row`}
                           checked={isSelected}
                           onChange={(e) =>
                             onRowSelect?.(rowKey as string | number, e.target.checked)
@@ -244,6 +246,7 @@ function ReusableTable<T>({
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
             <span>Rows per page:</span>
             <select
+              aria-label="Rows per page"
               value={pagination.rowsPerPage}
               onChange={(e) => {
                 if (onChangeRowsPerPage) {
