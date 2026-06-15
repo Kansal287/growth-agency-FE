@@ -101,6 +101,27 @@ function MultiSelect({ field }: { field: Field }) {
 
       {open && field.options && field.options.length > 0 && (
         <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-auto max-h-52 py-1">
+          <div
+            onClick={() => {
+              if (selected.length === field.options!.length) {
+                field.onMultiSelectChange?.([]);
+              } else {
+                field.onMultiSelectChange?.(field.options!.map((o) => o.value as string));
+              }
+            }}
+            className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700"
+          >
+            <input
+              type="checkbox"
+              aria-label="Select All"
+              checked={selected.length === field.options.length && field.options.length > 0}
+              onChange={() => {}}
+              className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-pink-600 focus:ring-pink-500 cursor-pointer pointer-events-none"
+            />
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              {selected.length === field.options!.length && field.options!.length > 0 ? 'Deselect All' : 'Select All'}
+            </span>
+          </div>
           {field.options.map((opt, i) => (
             <div
               key={i}
@@ -109,6 +130,7 @@ function MultiSelect({ field }: { field: Field }) {
             >
               <input
                 type="checkbox"
+                aria-label={String(opt.label)}
                 checked={selected.includes(opt.value as string)}
                 onChange={() => {}}
                 className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-pink-600 focus:ring-pink-500 cursor-pointer pointer-events-none"
