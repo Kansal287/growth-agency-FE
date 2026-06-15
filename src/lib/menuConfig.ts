@@ -54,6 +54,18 @@ export const adminMenuItems: MenuItem[] = [
     alwaysVisible: true,
   },
   {
+    name: "Subscription Plans",
+    icon: ListTodo,
+    link: "/admin/plans",
+    alwaysVisible: true,
+  },
+  {
+    name: "Payments & Invoices",
+    icon: CreditCard,
+    link: "/admin/payments",
+    alwaysVisible: true,
+  },
+  {
     name: "Admin Settings",
     icon: UserCheck,
     alwaysVisible: true,
