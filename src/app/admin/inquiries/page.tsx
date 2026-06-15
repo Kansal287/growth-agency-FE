@@ -321,6 +321,8 @@ export default function InquiriesAdminPage() {
               </div>
               <button 
                 onClick={closeDetailsModal}
+                aria-label="Close"
+                title="Close"
                 className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer"
               >
                 <X size={16} />

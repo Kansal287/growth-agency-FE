@@ -48,6 +48,10 @@ export default function Sidebar({ isOpen, onClose, menuItems, type }: SidebarPro
   const isActive = (item: MenuItem) => {
     if (!item.link) return false;
     
+    if (item.matchPath && pathname.startsWith(item.matchPath)) {
+      return true;
+    }
+    
     // Exact match for path and query parameters
     const itemUrl = new URL(item.link, 'https://local.test');
     const itemTab = itemUrl.searchParams.get('tab');

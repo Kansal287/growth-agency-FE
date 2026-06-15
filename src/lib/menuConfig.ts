@@ -24,6 +24,7 @@ export interface MenuItem {
   name: string;
   icon: any; // Using any to avoid strict JSX typing issues with different React environments
   link?: string;
+  matchPath?: string;
   permission?: string;
   alwaysVisible?: boolean;
   subtabs?: SubTab[];
@@ -92,5 +93,12 @@ export const adminMenuItems: MenuItem[] = [
     icon: Users,
     link: "/admin/users",
     alwaysVisible: true,
+  },
+  {
+    name: "Admin Settings",
+    icon: UserCheck,
+    alwaysVisible: true,
+    link: "/admin/admins/manageAdmin",
+    matchPath: "/admin/admins",
   },
 ];
