@@ -224,7 +224,7 @@ export default function PaymentsAdminPage() {
         <ReusableTable
           data={tableData}
           columns={tableColumns}
-          keyExtractor={(item) => item.id || item._id}
+          keyExtractor={(item) => item.id || item._id || ''}
           loading={isLoading}
           pagination={pagination}
           onChangePage={handleChangePage}
