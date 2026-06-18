@@ -33,6 +33,12 @@ export const clientMenuItems: MenuItem[] = [
     link: "/client/dashboard",
     alwaysVisible: true,
   },
+  {
+    name: "Support",
+    icon: Headphones,
+    link: "/client/support",
+    alwaysVisible: true,
+  },
 ];
 
 export const adminMenuItems: MenuItem[] = [
