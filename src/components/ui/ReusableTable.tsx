@@ -123,7 +123,7 @@ function ReusableTable<T>({
                     onChange={(e) => handleSelectAll(e.target.checked)}
                     className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-pink-600 focus:ring-pink-500 cursor-pointer"
                     title="Select all rows"
-                    aria-label="Select all rows"
+                    
                   />
                 </th>
               )}
@@ -204,7 +204,7 @@ function ReusableTable<T>({
                           }
                           className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-pink-600 focus:ring-pink-500 cursor-pointer"
                           title="Select row"
-                          aria-label="Select row"
+                          
                         />
                       </td>
                     )}
