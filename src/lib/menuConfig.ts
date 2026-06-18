@@ -6,11 +6,7 @@ import {
   CreditCard,
   ListTodo,
   UserCheck,
-  Globe,
-  Share2,
-  TrendingUp,
-  FolderOpen,
-  LifeBuoy,
+  Headphones,
 } from "lucide-react";
 
 export interface SubTab {
@@ -35,42 +31,6 @@ export const clientMenuItems: MenuItem[] = [
     name: "Dashboard",
     icon: LayoutDashboard,
     link: "/client/dashboard",
-    alwaysVisible: true,
-  },
-  {
-    name: "Website",
-    icon: Globe,
-    link: "/client/website",
-    alwaysVisible: true,
-  },
-  {
-    name: "Social Media",
-    icon: Share2,
-    link: "/client/social-media",
-    alwaysVisible: true,
-  },
-  {
-    name: "Leads",
-    icon: TrendingUp,
-    link: "/client/leads",
-    alwaysVisible: true,
-  },
-  {
-    name: "Files & Assets",
-    icon: FolderOpen,
-    link: "/client/assets",
-    alwaysVisible: true,
-  },
-  {
-    name: "Billing",
-    icon: CreditCard,
-    link: "/client/billing",
-    alwaysVisible: true,
-  },
-  {
-    name: "Support Desk",
-    icon: LifeBuoy,
-    link: "/client/support",
     alwaysVisible: true,
   },
 ];
@@ -112,5 +72,11 @@ export const adminMenuItems: MenuItem[] = [
     alwaysVisible: true,
     link: "/admin/admins/manageAdmin",
     matchPath: "/admin/admins",
+  },
+  {
+    name: "Support Tickets",
+    icon: Headphones,
+    link: "/admin/support",
+    alwaysVisible: true,
   },
 ];

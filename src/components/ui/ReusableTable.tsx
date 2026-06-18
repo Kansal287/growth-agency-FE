@@ -122,6 +122,8 @@ function ReusableTable<T>({
                     checked={isAllSelected}
                     onChange={(e) => handleSelectAll(e.target.checked)}
                     className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-pink-600 focus:ring-pink-500 cursor-pointer"
+                    title="Select all rows"
+                    aria-label="Select all rows"
                   />
                 </th>
               )}
@@ -201,6 +203,8 @@ function ReusableTable<T>({
                             onRowSelect?.(rowKey as string | number, e.target.checked)
                           }
                           className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-pink-600 focus:ring-pink-500 cursor-pointer"
+                          title="Select row"
+                          aria-label="Select row"
                         />
                       </td>
                     )}
@@ -244,10 +248,12 @@ function ReusableTable<T>({
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 px-1">
           {/* Rows per page */}
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-            <span>Rows per page:</span>
+            <label htmlFor="rows-per-page">Rows per page:</label>
             <select
-              aria-label="Rows per page"
+              id="rows-per-page"
               value={pagination.rowsPerPage}
+              title="Rows per page"
+              aria-label="Rows per page"
               onChange={(e) => {
                 if (onChangeRowsPerPage) {
                   onChangeRowsPerPage({ target: { value: e.target.value } } as React.ChangeEvent<HTMLInputElement>);
